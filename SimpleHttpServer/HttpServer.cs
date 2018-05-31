@@ -65,38 +65,57 @@ namespace SimpleHttpServer
 
         private HttpListener _httpListener;
         private HttpContextManager _httpContentManager;
+        private HandlerManager _handlerManager;
+        private HttpServerUtility _httpServerUtility;
 
         private Thread _listenThread; //请求监听的线程
 
-        public HttpServer()
+        public HttpServer(String rootDirectory)
         {
             _httpListener = new HttpListener();
-            this.Initialize();
+            this.Initialize(rootDirectory);
+            _httpServerUtility = new HttpServerUtility(_serverConfig);
+
+            _handlerManager = new HandlerManager(_serverConfig.HandlerConfig, _httpServerUtility);
+            _httpContentManager = new HttpContextManager(_serverConfig.WorkConfig, _handlerManager, _httpServerUtility);
+
+
             _listenThread = new Thread(HttpListen);
-            _httpContentManager = new HttpContextManager();
             _listenThread.Start();
         }
 
-        public void Initialize()
+        public void Initialize(String rootDirectory)
         {
-            _serverConfig = HttpServerRuntime.ServerConfig;
-            this.RootDirectory = this._serverConfig.RootDirectory;
-        }
-        public void Setting(String rootDirectory, IEnumerable<ListenAddress> addresses)
-        {
-            if (String.IsNullOrWhiteSpace(rootDirectory))
-            {
-                throw new ArgumentException(nameof(rootDirectory));
-            }
-            if (File.Exists(rootDirectory))
-            {
-                throw new DirectoryNotFoundException(rootDirectory);
-            }
-
+            this._serverConfig = HttpServerRuntime.LoadServerConfig(rootDirectory);
+            this.EnableConfig(this._serverConfig);
             this.RootDirectory = rootDirectory;
+        }
+        private void EnableConfig(ServerConfig config)
+        {
+#if NETCOREAPP20
+            if (config.TimeoutConfig != null)
+            {
+                var tc = config.TimeoutConfig;
 
+                if (tc.DrainEntityBody.HasValue)
+                    _httpListener.TimeoutManager.DrainEntityBody = tc.DrainEntityBody.Value;
 
+                if (tc.EntityBody.HasValue)
+                    _httpListener.TimeoutManager.EntityBody = tc.EntityBody.Value;
 
+                if (tc.HeaderWait.HasValue)
+                    _httpListener.TimeoutManager.HeaderWait = tc.HeaderWait.Value;
+
+                if (tc.IdleConnection.HasValue)
+                    _httpListener.TimeoutManager.IdleConnection = tc.IdleConnection.Value;
+
+                if (tc.MinSendBytesPerSecond.HasValue)
+                    _httpListener.TimeoutManager.MinSendBytesPerSecond = tc.MinSendBytesPerSecond.Value;
+
+                if (tc.RequestQueue.HasValue)
+                    _httpListener.TimeoutManager.RequestQueue = tc.RequestQueue.Value;
+            }
+#endif
         }
 
         /// <summary>
@@ -135,6 +154,7 @@ namespace SimpleHttpServer
             this._httpListener.Close();
             this._httpListener = null;
             this._listenThread = null;
+            this._httpContentManager.Dispose();
         }
         /// <summary>
         /// 停止监听
@@ -146,10 +166,7 @@ namespace SimpleHttpServer
             this._httpListener.Stop();
         }
 
-        private void Forward(HttpContext context)
-        {
-            this._httpContentManager.Forward(context);
-        }
+
 
         private void HttpListen()
         {
@@ -160,12 +177,19 @@ namespace SimpleHttpServer
 
                     case HttpServerStatus.Listening:
                         {
-                          
+
                             var oriContext = this._httpListener.GetContext();
+                            if (_httpContentManager.currentQueueNum > this._serverConfig.WorkConfig.ProcessQueueMaxLength)
+                            {
+                                oriContext.Response.Abort();
+                            }
                             TraceExt.WriteLineWithTime("received request");
-                            var httpContext = HttpContext.Wrap(oriContext, this);
+
+                            var httpContext = HttpContext.Wrap(oriContext, this._serverConfig, _httpServerUtility);
+
                             TraceExt.WriteLineWithTime("wraped context");
-                            this.Forward(httpContext);
+
+                            this._httpContentManager.Forward(httpContext);
                         }
                         break;
                     case HttpServerStatus.Ready:

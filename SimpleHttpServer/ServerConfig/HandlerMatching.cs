@@ -14,6 +14,9 @@ namespace SimpleHttpServer
         [XmlAttribute("select")]
         public String Select { get; set; }
 
+        /// <summary>
+        /// Handler 对象的类型名称
+        /// </summary>
         [XmlAttribute("type")]
         public String Type { get; set; }
     }

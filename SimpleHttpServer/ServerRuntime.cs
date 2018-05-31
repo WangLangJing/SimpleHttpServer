@@ -11,45 +11,66 @@ namespace SimpleHttpServer
     /// </summary>
     public static class HttpServerRuntime
     {
-        internal static String ServerConfigPath;
-        public static ServerConfig ServerConfig { get; private set; }
+        public static readonly String ServerConfigName = "Server.config";
 
         static HttpServerRuntime()
         {
-            ServerConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Server.config");
-            Initialize();
+
         }
 
-        private volatile static Boolean _initialized;
-        public static Boolean Initialized { get => _initialized; }
 
-
-
-        public static void Initialize()
+        public static ServerConfig LoadServerConfig(String directory)
         {
-            if (!_initialized)
+            ServerConfig config = null;
+            String path = Path.Combine(directory, ServerConfigName);
+            if (File.Exists(path))
             {
-                if (File.Exists(ServerConfigPath))
+                XmlSerializer serializer = new XmlSerializer(typeof(ServerConfig));
+                using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(ServerConfig));
-                    using (FileStream stream = new FileStream(ServerConfigPath, FileMode.Open, FileAccess.Read))
-                    {
-                        ServerConfig = serializer.Deserialize(stream) as ServerConfig;
-                    }
+                    config = serializer.Deserialize(stream) as ServerConfig;
                 }
-                if (ServerConfig == null)
-                {
-                    ServerConfig = new ServerConfig();
-                }
-                _initialized = true;
+                CheckConfig(config);
             }
+            else
+            {
+                config = DefaultConfig();
+            }
+            config.RootDirectory = directory;
+            return config;
+        }
+        private static void CheckConfig(ServerConfig config)
+        {
+
+        }
+        private static ServerConfig DefaultConfig()
+        {
+            ServerConfig config = new ServerConfig();
+
+            config.WorkConfig = new WorkConfig();
+            config.WorkConfig.ProcessQueueMaxLength = 2000;
+
+            if (Environment.Is64BitOperatingSystem)
+            {
+                config.WorkConfig.WorkThreadNum = Environment.ProcessorCount / 2;
+            }
+            else
+            {
+                config.WorkConfig.WorkThreadNum = Environment.ProcessorCount;
+            }
+
+            config.ListenConfig = new ListenConfig();
+
+            config.StaticContentConfig = new StaticContentConfig();
+
+            config.HandlerConfig = new HandlerConfig();
+
+
+            return config;
         }
         public static void Release()
         {
-            if (_initialized)
-            {
-                //...
-            }
+
         }
     }
 }

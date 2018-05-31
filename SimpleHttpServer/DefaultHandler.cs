@@ -9,7 +9,7 @@ namespace SimpleHttpServer
     public class DefaultHandler : IHttpHandler
     {
         public Boolean IsReusable => true;
-
+        public Boolean IsAsync => true;
 
         public void ProcessContext(HttpContext context)
         {
@@ -18,8 +18,8 @@ namespace SimpleHttpServer
             {
                 filename = filename.Substring(1);
             }
-            filename = Path.Combine(context.RootDirectory, filename);
-            HttpStatusCode statusCode= HttpStatusCode.OK;
+            filename = context.Server.MapPhysicsPath(filename);
+            HttpStatusCode statusCode = HttpStatusCode.OK;
             if (File.Exists(filename))
             {
                 try
@@ -27,7 +27,7 @@ namespace SimpleHttpServer
                     Stream remoteStream = context.Request.InputStream;
                     using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        context.Response.ContentType = MimeAssistor.GetMimeType(Path.GetExtension(filename));
+                        context.Response.ContentType = context.Server.MimeTypes[Path.GetExtension(filename)];
                         context.Response.ContentLength64 = stream.Length;
                         stream.CopyTo(context.Response.OutputStream);
                         stream.Flush();

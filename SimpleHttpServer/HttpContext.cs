@@ -8,27 +8,6 @@ namespace SimpleHttpServer
 {
     public class HttpContext
     {
-        /// <summary>
-        /// 服务的根目录
-        /// </summary>
-        public String RootDirectory { get; private set; }
-
-        /// <summary>
-        /// 上下文的处理对象
-        /// </summary>
-        public IHttpHandler Handler { get;internal set; }
-
-        internal static HttpContext Wrap(HttpListenerContext original, HttpServer server)
-        {
-            var context = new HttpContext(original);
-            context.RootDirectory = server.RootDirectory;
-            return context;
-        }
-
-        internal HttpContext(HttpListenerContext original)
-        {
-            this.Entity = original;
-        }
 
         public HttpListenerContext Entity { get; private set; }
 
@@ -47,5 +26,27 @@ namespace SimpleHttpServer
                 return this.Entity.Response;
             }
         }
+
+        /// <summary>
+        /// 请求上下文的处理对象
+        /// </summary>
+        public IHttpHandler Handler { get; internal set; }
+
+        public HttpServerUtility Server { get; internal set; }
+
+
+        internal static HttpContext Wrap(HttpListenerContext original, ServerConfig config, HttpServerUtility utility)
+        {
+            var context = new HttpContext(original);
+            context.Server = utility;
+            return context;
+        }
+
+        internal HttpContext(HttpListenerContext original)
+        {
+            this.Entity = original;
+        }
+
+      
     }
 }

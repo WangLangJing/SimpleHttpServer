@@ -15,17 +15,23 @@ namespace SimpleHttpServer
         /// <summary>
         /// 服务的根目录
         /// </summary>
-        [XmlElement]
-        public String RootDirectory { get; set; } = AppDomain.CurrentDomain.BaseDirectory;
+        [XmlElement("RootDirectory")]
+        public String RootDirectory { get; set; } /*= AppDomain.CurrentDomain.BaseDirectory;*/
 
         [XmlElement("Listen")]
-        public ListenConfig ListenConfig { get; set; } = new ListenConfig();
+        public ListenConfig ListenConfig { get; set; }
 
         [XmlElement("HttpHandlers")]
-        public HandlerConfig HandlerConfig { get; set; } = new HandlerConfig();
+        public HandlerConfig HandlerConfig { get; set; }
 
+        [XmlElement("Work")]
+        public WorkConfig WorkConfig { get; set; }
 
         [XmlElement("StaticContent")]
-        public StaticContentConfig StaticContentConfig { get; set; } = new StaticContentConfig();
+        public StaticContentConfig StaticContentConfig { get; set; }
+ #if NETCOREAPP20
+        [XmlElement("Timeout")]
+        public TimeoutConfig TimeoutConfig { get; set; }
+#endif
     }
 }

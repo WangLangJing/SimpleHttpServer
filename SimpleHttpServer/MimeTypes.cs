@@ -6,15 +6,22 @@ using System.Web;
 
 namespace SimpleHttpServer
 {
-    public static class MimeAssistor
+    public class MimeTypes
     {
-
-
-        public static Dictionary<String, String> _MapTable = CreateMapTable();
-
-        static MimeAssistor()
+        public String this[String ext]
         {
-            var maps = HttpServerRuntime.ServerConfig.StaticContentConfig.MimeMaps;
+            get
+            {
+                return this.GetMimeType(ext);
+            }
+        }
+
+        public Dictionary<String, String> _mapTable;
+
+        public MimeTypes(StaticContentConfig config)
+        {
+            var maps = config.MimeMaps;
+            _mapTable = CreateMapTable();
             if (maps != null && maps.Length >= 0)
             {
                 foreach (var map in maps)
@@ -23,7 +30,7 @@ namespace SimpleHttpServer
                 }
             }
         }
-        private static Dictionary<String, String> CreateMapTable()
+        private Dictionary<String, String> CreateMapTable()
         {
             var mapTable = new Dictionary<String, String>();
             mapTable.Add(".323", "text/h323");
@@ -225,22 +232,22 @@ namespace SimpleHttpServer
             return mapTable;
         }
 
-        public static void SetMimeType(String ext, String mimeType)
+        public void SetMimeType(String ext, String mimeType)
         {
             if (!String.IsNullOrEmpty(mimeType) && !String.IsNullOrEmpty(mimeType))
             {
-                _MapTable[ext] = mimeType;
+                _mapTable[ext] = mimeType;
             }
         }
         /// <summary>
         /// 获取指定后缀名对应的MIME类型
         /// </summary>
-        public static String GetMimeType(String ext)
+        public String GetMimeType(String ext)
         {
             String contentType = "application/octet-stream";
-            if (!String.IsNullOrEmpty(ext) && _MapTable.ContainsKey(ext))
+            if (!String.IsNullOrEmpty(ext) && _mapTable.ContainsKey(ext))
             {
-                contentType = _MapTable[ext];
+                contentType = _mapTable[ext];
             }
             return contentType;
         }

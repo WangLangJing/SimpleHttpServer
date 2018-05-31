@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHttpServer", "SimpleHttpServer\SimpleHttpServer.csproj", "{E091C95E-BD7F-455E-A932-ADD52CD7497C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHttpServer", "SimpleHttpServer\SimpleHttpServer.csproj", "{E091C95E-BD7F-455E-A932-ADD52CD7497C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHttpServer.Test", "SimpleHttpServer.Test\SimpleHttpServer.Test.csproj", "{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHttpServer.Test", "SimpleHttpServer.Test\SimpleHttpServer.Test.csproj", "{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performance.Test", "Performance.Test\Performance.Test.csproj", "{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
