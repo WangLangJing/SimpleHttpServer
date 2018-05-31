@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHttpServer.Test", "Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performance.Test", "Performance.Test\Performance.Test.csproj", "{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performance.Test.NET40", "Performance.Test.NET40\Performance.Test.NET40.csproj", "{41C05EBB-D2EA-4DCD-8972-583404EDF992}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

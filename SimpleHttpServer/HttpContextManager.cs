@@ -53,9 +53,10 @@ namespace SimpleHttpServer
         {
             while (_singal == 0)
             {
-                //若果当前处理队列中有请求
+                //若当前处理队列中有请求
                 if (currentQueueNum > 0)
                 {
+                    
                     var context = this._processQueue.Dequeue();
                     if (context != null)
                     {

@@ -18,19 +18,19 @@ namespace SimpleHttpServer
         /// <summary>
         /// 监听中
         /// </summary>
-        Listening,
+        Listening=1,
         /// <summary>
         /// 已停止
         /// </summary>
-        Stopped,
+        Stopped=2,
         /// <summary>
         /// 已关闭
         /// </summary>
-        Closed,
+        Closed=3,
         /// <summary>
         /// 混乱，处于此状态的 Server 不可用
         /// </summary>
-        Chaos
+        Chaos=4
     }
     public class HttpServer
     {
@@ -43,15 +43,15 @@ namespace SimpleHttpServer
         {
             get
             {
-                return _status;
+                return (HttpServerStatus)_status;
             }
             private set
             {
-                this._status = value;
+                Interlocked.Exchange(ref this._status, (Int32)value);
             }
         }
 
-        private volatile HttpServerStatus _status = HttpServerStatus.Ready;
+        private volatile Int32 _status = (Int32)HttpServerStatus.Ready;
 
         /// <summary>
         ///服务器的根目录
@@ -70,7 +70,7 @@ namespace SimpleHttpServer
 
         private Thread _listenThread; //请求监听的线程
 
-        public HttpServer(String rootDirectory)
+        public HttpServer(String rootDirectory = null)
         {
             _httpListener = new HttpListener();
             this.Initialize(rootDirectory);
@@ -86,9 +86,17 @@ namespace SimpleHttpServer
 
         public void Initialize(String rootDirectory)
         {
-            this._serverConfig = HttpServerRuntime.LoadServerConfig(rootDirectory);
+            this._serverConfig = HttpServerRuntime.LoadServerConfig(AppDomain.CurrentDomain.BaseDirectory);
             this.EnableConfig(this._serverConfig);
             this.RootDirectory = rootDirectory;
+            if (rootDirectory == null)
+            {
+                this.RootDirectory = this._serverConfig.RootDirectory;
+            }
+            if (Directory.Exists(this.RootDirectory))
+            {
+                throw new DirectoryNotFoundException("web directory not found");
+            }
         }
         private void EnableConfig(ServerConfig config)
         {
@@ -123,17 +131,24 @@ namespace SimpleHttpServer
         /// </summary>
         public void Start(IEnumerable<ListenAddress> addresses = null)
         {
+            List<ListenAddress> list = new List<ListenAddress>();
             if (addresses != null)
             {
-                foreach (ListenAddress addr in addresses)
+                list.AddRange(addresses);
+
+            }
+            if (_serverConfig.ListenConfig.Addresses != null)
+            {
+                list.AddRange(_serverConfig.ListenConfig.Addresses);
+            }
+            foreach (ListenAddress addr in list)
+            {
+                String format = HttpUrlFormat;
+                if (addr.IsHttps)
                 {
-                    String format = HttpUrlFormat;
-                    if (addr.IsHttps)
-                    {
-                        format = HttpsUrlForamt;
-                    }
-                    _httpListener.Prefixes.Add(String.Format(format, addr.Host, addr.Port.ToString()));
+                    format = HttpsUrlForamt;
                 }
+                _httpListener.Prefixes.Add(String.Format(format, addr.Host, addr.Port.ToString()));
             }
             if (_httpListener.Prefixes.Count <= 0)
             {
@@ -170,19 +185,33 @@ namespace SimpleHttpServer
 
         private void HttpListen()
         {
+            Int32 count = 0;
             while (true)
             {
-                switch (this._status)
+                switch ((HttpServerStatus)this._status)
                 {
 
                     case HttpServerStatus.Listening:
                         {
-
-                            var oriContext = this._httpListener.GetContext();
+                        
+                            HttpListenerContext oriContext = null;
+                            try
+                            {
+                                oriContext = this._httpListener.GetContext();
+                                TraceExt.WriteLineWithTime("context count "+ (++count).ToString());
+                            }
+                            catch
+                            {
+                                if (this._status == (Int32)HttpServerStatus.Listening)
+                                {
+                                    throw;
+                                }
+                            }
                             if (_httpContentManager.currentQueueNum > this._serverConfig.WorkConfig.ProcessQueueMaxLength)
                             {
                                 oriContext.Response.Abort();
                             }
+                
                             TraceExt.WriteLineWithTime("received request");
 
                             var httpContext = HttpContext.Wrap(oriContext, this._serverConfig, _httpServerUtility);
@@ -195,13 +224,14 @@ namespace SimpleHttpServer
                     case HttpServerStatus.Ready:
                     case HttpServerStatus.Stopped:
                         {
+                            TraceExt.WriteLineWithTime("server sleep");
                             Thread.Sleep(50);
                         }
                         break;
                     case HttpServerStatus.Closed:
                     case HttpServerStatus.Chaos:
                         {
-
+                            TraceExt.WriteLineWithTime("server closed");
                         }
                         return;
                 }

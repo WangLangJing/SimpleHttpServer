@@ -13,18 +13,18 @@ namespace SimpleHttpServer
     public class HandlerManager
     {
         private HandlerConfig _handlerConfig;
-        private ConcurrentDictionary<String, Func<IHttpHandler>> _factoryCache;
-        private ConcurrentDictionary<String, IHttpHandler> _handlerCache;
+        private Dictionary<String, Func<IHttpHandler>> _factoryCache;
+        private Dictionary<String, IHttpHandler> _handlerCache;
 
         private HttpServerUtility _serverUtility;
-        private Boolean _hasMatch; 
+        private Boolean _hasMatch;
 
 
         public HandlerManager(HandlerConfig config, HttpServerUtility serverUtility)
         {
             this._handlerConfig = config;
-            this._factoryCache = new ConcurrentDictionary<String, Func<IHttpHandler>>();
-            this._handlerCache = new ConcurrentDictionary<String, IHttpHandler>();
+            this._factoryCache = new Dictionary<String, Func<IHttpHandler>>();
+            this._handlerCache = new Dictionary<String, IHttpHandler>();
             _serverUtility = serverUtility;
             var handlerMatchs = _handlerConfig.Handlers;
             if (handlerMatchs != null && handlerMatchs.Length > 0)
@@ -37,10 +37,23 @@ namespace SimpleHttpServer
                     String[] splitInfo = typeStr.Split(',');
                     if (splitInfo.Length == 2)
                     {
-                        String assemblyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, splitInfo[0]);
+                        String assemblyFileName = splitInfo[0];
+                        if (!assemblyFileName.EndsWith(".dll") && !assemblyFileName.EndsWith(".exe"))
+                        {
+                            String temp = assemblyFileName + ".exe";
+                            if (File.Exists(temp))
+                            {
+                                assemblyFileName = temp;
+                            }
+                            else
+                            {
+                                assemblyFileName = ".dll";
+                            }
+                        }
+                        String assemblyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyFileName);
                         String typeName = splitInfo[1];
 
-                        var assembly = Assembly.LoadFile(assemblyPath);
+                        var assembly = Assembly.LoadFrom(assemblyPath);
                         Type handlerType = assembly.GetType(typeName);
 
                         //IHandler obj=(IHandler)(new T());
@@ -50,10 +63,10 @@ namespace SimpleHttpServer
                         UnaryExpression unaryExp = Expression.Convert(exp, IhandlerType);
                         var factory = Expression.Lambda<Func<IHttpHandler>>(unaryExp).Compile();
                         handler = factory.Invoke();
-                        this._factoryCache.TryAdd(matchStr, factory);
+                        this._factoryCache.Add(matchStr, factory);
                         if (handler.IsReusable)
                         {
-                            this._handlerCache.TryAdd(typeStr, handler);
+                            this._handlerCache.Add(typeStr, handler);
                         }
                     }
                 }
