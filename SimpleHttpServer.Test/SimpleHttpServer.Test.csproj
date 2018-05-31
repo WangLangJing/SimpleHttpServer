@@ -10,16 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="index.html">
+    <None Update="Web\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Server.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Web\" />
   </ItemGroup>
 
 </Project>

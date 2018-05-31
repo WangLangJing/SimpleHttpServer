@@ -93,9 +93,13 @@ namespace SimpleHttpServer
             {
                 this.RootDirectory = this._serverConfig.RootDirectory;
             }
-            if (Directory.Exists(this.RootDirectory))
+            else
             {
-                throw new DirectoryNotFoundException("web directory not found");
+                this._serverConfig.RootDirectory = this.RootDirectory;
+            }
+            if (!Directory.Exists(this.RootDirectory))
+            {
+                throw new DirectoryNotFoundException("root directory not found");
             }
         }
         private void EnableConfig(ServerConfig config)
@@ -155,9 +159,9 @@ namespace SimpleHttpServer
                 throw new InvalidOperationException("not found listen address!");
             }
 
-            this.Status = HttpServerStatus.Listening;
-            this._httpListener.Start();
 
+            this._httpListener.Start();
+            this.Status = HttpServerStatus.Listening;
 
         }
         /// <summary>

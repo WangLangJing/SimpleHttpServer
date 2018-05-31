@@ -6,6 +6,8 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
+
 namespace SimpleHttpServer
 {
     public class HttpContextManager : IDisposable
@@ -56,7 +58,7 @@ namespace SimpleHttpServer
                 //若当前处理队列中有请求
                 if (currentQueueNum > 0)
                 {
-                    
+
                     var context = this._processQueue.Dequeue();
                     if (context != null)
                     {
@@ -70,11 +72,10 @@ namespace SimpleHttpServer
                         }
                         else
                         {
-                            handler.ProcessContext(context);
+                            Process(context);
                         }
                     }
                 }
-                //若无工作线程休眠
                 else
                 {
                     Thread.Sleep(50);
@@ -99,10 +100,21 @@ namespace SimpleHttpServer
         {
             try
             {
+                context.Response.StatusCode = (Int32)HttpStatusCode.OK;
                 context.Handler.ProcessContext(context);
+                context.Response.Close();
+
             }
-            catch
+            catch (HttpListenerException hExc)
             {
+                Debug.WriteLine(hExc.Message+"\r\n"+hExc.StackTrace);
+                context.Response.Abort();
+            }
+            catch(Exception exc)
+            {
+                Debug.WriteLine(exc.Message + "\r\n" + exc.StackTrace);
+                context.Response.StatusCode = (Int32)HttpStatusCode.InternalServerError;
+                context.Response.Close();
             }
         }
         public void Dispose()

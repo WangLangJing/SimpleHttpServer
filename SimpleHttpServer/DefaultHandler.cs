@@ -22,8 +22,7 @@ namespace SimpleHttpServer
             HttpStatusCode statusCode = HttpStatusCode.OK;
             if (File.Exists(filename))
             {
-                try
-                {
+            
                     Stream remoteStream = context.Request.InputStream;
                     using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
@@ -33,11 +32,7 @@ namespace SimpleHttpServer
                         stream.Flush();
                         context.Response.OutputStream.Flush();
                     }
-                }
-                catch
-                {
-                    statusCode = HttpStatusCode.InternalServerError;
-                }
+    
             }
             else
             {
