@@ -70,10 +70,10 @@ namespace SimpleHttpServer
 
         private Thread _listenThread; //请求监听的线程
 
-        public HttpServer(String rootDirectory = null)
+        public HttpServer(String configPath = null)
         {
             _httpListener = new HttpListener();
-            this.Initialize(rootDirectory);
+            this.Initialize(configPath);
             _httpServerUtility = new HttpServerUtility(_serverConfig);
 
             _handlerManager = new HandlerManager(_serverConfig.HandlerConfig, _httpServerUtility);
@@ -84,19 +84,10 @@ namespace SimpleHttpServer
             _listenThread.Start();
         }
 
-        public void Initialize(String rootDirectory)
+        public void Initialize(String configPath)
         {
-            this._serverConfig = HttpServerRuntime.LoadServerConfig(AppDomain.CurrentDomain.BaseDirectory);
+            this._serverConfig = HttpServerRuntime.LoadServerConfig(configPath);
             this.EnableConfig(this._serverConfig);
-            this.RootDirectory = rootDirectory;
-            if (rootDirectory == null)
-            {
-                this.RootDirectory = this._serverConfig.RootDirectory;
-            }
-            else
-            {
-                this._serverConfig.RootDirectory = this.RootDirectory;
-            }
             if (!Directory.Exists(this.RootDirectory))
             {
                 throw new DirectoryNotFoundException("root directory not found");

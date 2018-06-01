@@ -20,15 +20,20 @@ namespace SimpleHttpServer
 
         public MimeTypes(StaticContentConfig config)
         {
-            var maps = config.MimeMaps;
+     
             _mapTable = CreateMapTable();
-            if (maps != null && maps.Length >= 0)
+            if (config != null)
             {
-                foreach (var map in maps)
+                var maps = config.MimeMaps;
+                if (maps != null && maps.Length >= 0)
                 {
-                    SetMimeType(map.FileExtension, map.MimeType);
+                    foreach (var map in maps)
+                    {
+                        SetMimeType(map.FileExtension, map.MimeType);
+                    }
                 }
             }
+          
         }
         private Dictionary<String, String> CreateMapTable()
         {

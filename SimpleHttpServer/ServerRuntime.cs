@@ -19,10 +19,10 @@ namespace SimpleHttpServer
         }
 
 
-        public static ServerConfig LoadServerConfig(String directory)
+        public static ServerConfig LoadServerConfig(String configPath=null)
         {
             ServerConfig config = null;
-            String path = Path.Combine(directory, ServerConfigName);
+            String path = configPath?? Path.Combine(configPath, ServerConfigName);
             if (File.Exists(path))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ServerConfig));
@@ -36,7 +36,6 @@ namespace SimpleHttpServer
             {
                 config = DefaultConfig();
             }
-            config.RootDirectory = directory;
             return config;
         }
         private static void CheckConfig(ServerConfig config)
