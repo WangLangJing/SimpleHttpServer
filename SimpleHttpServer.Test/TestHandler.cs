@@ -18,7 +18,6 @@ namespace SimpleHttpServer.Test
             Console.WriteLine("Obj Id:"+this.GetHashCode());
             Console.WriteLine(context.Request.Url.OriginalString);
             context.Response.Redirect("http://www.baidu.com");
-            //String filename = context.Request.Url.AbsolutePath;
             //if (!String.IsNullOrEmpty(filename))
             //{
             //    filename = filename.Substring(1);

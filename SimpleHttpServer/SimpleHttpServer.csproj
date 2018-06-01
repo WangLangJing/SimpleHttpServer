@@ -1,7 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  
   <PropertyGroup>
-    <TargetFrameworks>net40;netcoreapp2.0</TargetFrameworks>
+    <Configurations>Debug;Release;netcore2.0_debug;netcore2.0_release</Configurations>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='netcore2.0_debug' ">
+         <TargetFramework>netcoreapp2.0</TargetFramework>
+     <DefineConstants>TRACE;DEBUG</DefineConstants>
+    </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)'=='netcore2.0_release' ">
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <DefineConstants></DefineConstants>
+  </PropertyGroup>
+
+
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug' ">
+    <TargetFramework>net40</TargetFramework>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release' ">
+    <TargetFramework>net40</TargetFramework>
+    <DefineConstants>NET40</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netcore2.0_debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netcore2.0_release|AnyCPU'">
+    <OutputPath>bin\Release</OutputPath>
+  </PropertyGroup>
+
+
+
+
 
 </Project>

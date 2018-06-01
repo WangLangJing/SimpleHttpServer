@@ -7,30 +7,48 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHttpServer", "SimpleH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHttpServer.Test", "SimpleHttpServer.Test\SimpleHttpServer.Test.csproj", "{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performance.Test", "Performance.Test\Performance.Test.csproj", "{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Performance.Test", "Performance.Test\Performance.Test.csproj", "{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performance.Test.NET40", "Performance.Test.NET40\Performance.Test.NET40.csproj", "{41C05EBB-D2EA-4DCD-8972-583404EDF992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		netcore2.0_debug|Any CPU = netcore2.0_debug|Any CPU
+		netcore2.0_release|Any CPU = netcore2.0_release|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E091C95E-BD7F-455E-A932-ADD52CD7497C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E091C95E-BD7F-455E-A932-ADD52CD7497C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E091C95E-BD7F-455E-A932-ADD52CD7497C}.netcore2.0_debug|Any CPU.ActiveCfg = netcore2.0_debug|Any CPU
+		{E091C95E-BD7F-455E-A932-ADD52CD7497C}.netcore2.0_debug|Any CPU.Build.0 = netcore2.0_debug|Any CPU
+		{E091C95E-BD7F-455E-A932-ADD52CD7497C}.netcore2.0_release|Any CPU.ActiveCfg = netcore2.0_release|Any CPU
+		{E091C95E-BD7F-455E-A932-ADD52CD7497C}.netcore2.0_release|Any CPU.Build.0 = netcore2.0_release|Any CPU
 		{E091C95E-BD7F-455E-A932-ADD52CD7497C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E091C95E-BD7F-455E-A932-ADD52CD7497C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.netcore2.0_debug|Any CPU.ActiveCfg = netcore2.0_debug|Any CPU
+		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.netcore2.0_debug|Any CPU.Build.0 = netcore2.0_debug|Any CPU
+		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.netcore2.0_release|Any CPU.ActiveCfg = netcore2.0_release|Any CPU
+		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.netcore2.0_release|Any CPU.Build.0 = netcore2.0_release|Any CPU
 		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD0B1D0F-BC50-4097-BDBA-FA370BD23FAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.netcore2.0_debug|Any CPU.ActiveCfg = netcore2.0_debug|Any CPU
+		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.netcore2.0_debug|Any CPU.Build.0 = netcore2.0_debug|Any CPU
+		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.netcore2.0_release|Any CPU.ActiveCfg = netcore2.0_release|Any CPU
+		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.netcore2.0_release|Any CPU.Build.0 = netcore2.0_release|Any CPU
 		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EC63A99-6C2D-45F7-AD49-0A129214FF6C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.netcore2.0_debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.netcore2.0_debug|Any CPU.Build.0 = Debug|Any CPU
+		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.netcore2.0_release|Any CPU.ActiveCfg = Release|Any CPU
+		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.netcore2.0_release|Any CPU.Build.0 = Release|Any CPU
 		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
