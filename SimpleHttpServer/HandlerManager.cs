@@ -47,7 +47,7 @@ namespace SimpleHttpServer
                             }
                             else
                             {
-                                assemblyFileName = ".dll";
+                                assemblyFileName += ".dll";
                             }
                         }
                         String assemblyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyFileName);
