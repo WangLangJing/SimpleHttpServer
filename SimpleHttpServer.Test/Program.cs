@@ -6,7 +6,7 @@ namespace SimpleHttpServer.Test
     {
         static void Main(string[] args)
         {
-            HttpServer server = new HttpServer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Web"));
+			HttpServer server = new HttpServer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Server.config"));
             try
             {
 

@@ -56,7 +56,14 @@ namespace SimpleHttpServer
         /// <summary>
         ///服务器的根目录
         /// </summary>
-        public String RootDirectory { get; private set; }
+        public String RootDirectory { get
+			{
+				return this._serverConfig.RootDirectory;
+			}
+			private set
+			{
+				this._serverConfig.RootDirectory=value;
+			}}
         private ServerConfig _serverConfig;
 
         const String HttpUrlFormat = "http://{0}:{1}/";
