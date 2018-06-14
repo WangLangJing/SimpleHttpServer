@@ -37,6 +37,7 @@ namespace HttpLogWriter
             }
             var response = (HttpWebResponse)request.GetResponse();
 
+            //TODO:Set Cookies  设置下次请求的 Cookies 
             Encoding encoding = Encoding.GetEncoding(response.CharacterSet);
             using (var repsonseStream = response.GetResponseStream())
             {
