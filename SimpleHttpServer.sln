@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Performance.Test", "Perform
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Performance.Test.NET40", "Performance.Test.NET40\Performance.Test.NET40.csproj", "{41C05EBB-D2EA-4DCD-8972-583404EDF992}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpLogWriter", "HttpLogWriter\HttpLogWriter.csproj", "{BC20AD0E-F4DC-475D-B442-E76BA25A8DF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.netcore2.0_release|Any CPU.Build.0 = Release|Any CPU
 		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41C05EBB-D2EA-4DCD-8972-583404EDF992}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC20AD0E-F4DC-475D-B442-E76BA25A8DF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC20AD0E-F4DC-475D-B442-E76BA25A8DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC20AD0E-F4DC-475D-B442-E76BA25A8DF2}.netcore2.0_debug|Any CPU.ActiveCfg = Release|Any CPU
+		{BC20AD0E-F4DC-475D-B442-E76BA25A8DF2}.netcore2.0_debug|Any CPU.Build.0 = Release|Any CPU
+		{BC20AD0E-F4DC-475D-B442-E76BA25A8DF2}.netcore2.0_release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC20AD0E-F4DC-475D-B442-E76BA25A8DF2}.netcore2.0_release|Any CPU.Build.0 = Release|Any CPU
+		{BC20AD0E-F4DC-475D-B442-E76BA25A8DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC20AD0E-F4DC-475D-B442-E76BA25A8DF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
