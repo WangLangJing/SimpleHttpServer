@@ -34,27 +34,8 @@ namespace SimpleHttpServer
                     IHttpHandler handler = null;
                     String typeStr = match.Type;
                     String matchStr = match.Select;
-                    String[] splitInfo = typeStr.Split(',');
-                    if (splitInfo.Length == 2)
-                    {
-                        String assemblyFileName = splitInfo[0];
-                        if (!assemblyFileName.EndsWith(".dll") && !assemblyFileName.EndsWith(".exe"))
-                        {
-                            String temp = assemblyFileName + ".exe";
-                            if (File.Exists(temp))
-                            {
-                                assemblyFileName = temp;
-                            }
-                            else
-                            {
-                                assemblyFileName += ".dll";
-                            }
-                        }
-                        String assemblyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyFileName);
-                        String typeName = splitInfo[1];
 
-                        var assembly = Assembly.LoadFrom(assemblyPath);
-                        Type handlerType = assembly.GetType(typeName);
+                    Type handlerType = Type.GetType(typeStr);
 
                         //IHandler obj=(IHandler)(new T());
                         Type IhandlerType = typeof(IHttpHandler);
@@ -68,7 +49,7 @@ namespace SimpleHttpServer
                         {
                             this._handlerCache.Add(typeStr, handler);
                         }
-                    }
+                   
                 }
                 _hasMatch = true;
             }
